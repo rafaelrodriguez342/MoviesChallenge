@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="video_categories_movie">
+        <item>POPULAR</item>
+        <item>TOP_RATED</item>
+        <item>UPCOMING</item>
+    </string-array>
+    <string-array name="video_categories_tv">
+        <item>POPULAR</item>
+        <item>TOP_RATED</item>
+    </string-array>
+</resources>

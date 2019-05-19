@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Movie DB</string>
+    <string name="movie_db_api_key">1efd7f2626fda9d54122b7bf20bbd3c9</string>
+    <string name="title_activity_details">Video Detail</string>
+    <string name="vote_count_label">Vote count:</string>
+    <string name="vote_average_label">Vote average:</string>
+    <string name="movie_type_label">Movie</string>
+    <string name="tv_type_label">TV</string>
+    <string name="search_hint">Search</string>
+    <string name="error_message">We are having an error trying to access the api right now, please try later.</string>
+</resources>
