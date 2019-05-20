@@ -27,12 +27,12 @@ public class VideoDataApiClientRepository implements VideoDataRepository {
             new AbstractMap.SimpleImmutableEntry<>(Filter.Category.UPCOMING, "upcoming")
     ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-    private RetrofitApiClient retrofitApiClient;
+    private RetrofitVideoDataApiClientDao retrofitVideoDataApiClient;
     private final Context context;
 
     @Inject
-    public VideoDataApiClientRepository(RetrofitApiClient retrofitApiClient, Context context) {
-        this.retrofitApiClient = retrofitApiClient;
+    public VideoDataApiClientRepository(RetrofitVideoDataApiClientDao retrofitVideoDataApiClient, Context context) {
+        this.retrofitVideoDataApiClient = retrofitVideoDataApiClient;
         this.context = context;
     }
 
@@ -40,7 +40,7 @@ public class VideoDataApiClientRepository implements VideoDataRepository {
     public Observable<List<VideoData>> getVideosData(Filter filter) {
         switch (filter.getType()) {
             case MOVIE:
-                return retrofitApiClient.getMovieVideosData(CATEGORY_QUERY_STRINGS.get(filter.getCategory()),
+                return retrofitVideoDataApiClient.getMovieVideosData(CATEGORY_QUERY_STRINGS.get(filter.getCategory()),
                         context.getString(R.string.movie_db_api_key)).map(videoDataDTOS -> videoDataDTOS.getResults().stream()
                                                                                                         .map(videoDataDTO -> new VideoData(videoDataDTO
                                                                                                                 .getId(),
@@ -52,7 +52,7 @@ public class VideoDataApiClientRepository implements VideoDataRepository {
                                                                                                                 videoDataDTO.getOverview()))
                                                                                                         .collect(Collectors.toList()));
             case TV:
-                return retrofitApiClient.getTvVideosData(CATEGORY_QUERY_STRINGS.get(filter.getCategory()),
+                return retrofitVideoDataApiClient.getTvVideosData(CATEGORY_QUERY_STRINGS.get(filter.getCategory()),
                         context.getString(R.string.movie_db_api_key)).map(videoDataDTOS -> videoDataDTOS.getResults().stream()
                                                                                                         .map(videoDataDTO -> new VideoData(videoDataDTO
                                                                                                                 .getId(),

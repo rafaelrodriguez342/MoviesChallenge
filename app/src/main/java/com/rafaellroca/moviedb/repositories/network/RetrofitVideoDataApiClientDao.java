@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface RetrofitApiClient {
+public interface RetrofitVideoDataApiClientDao {
     @GET("/3/movie/{category}")
     Observable<VideoDataListResponseDTO<MovieVideoDataDTO>> getMovieVideosData(@Path("category") String category, @Query("api_key") String apiKey);
     @GET("/3/tv/{category}")

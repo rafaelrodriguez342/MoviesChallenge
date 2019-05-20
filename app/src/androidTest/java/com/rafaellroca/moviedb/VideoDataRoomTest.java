@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import io.reactivex.Single;
 
 @RunWith(AndroidJUnit4.class)
-public class VideoStateRoomTest {
+public class VideoDataRoomTest {
 
     private VideosDataBase videoDatabase;
 

@@ -14,7 +14,7 @@ import com.rafaellroca.moviedb.repositories.database.VideosDataBase;
 import com.rafaellroca.moviedb.repositories.interfaces.VideoDataCacheRepository;
 import com.rafaellroca.moviedb.repositories.interfaces.VideoDataRepository;
 import com.rafaellroca.moviedb.repositories.network.CombineVideoDataRepository;
-import com.rafaellroca.moviedb.repositories.network.RetrofitApiClient;
+import com.rafaellroca.moviedb.repositories.network.RetrofitVideoDataApiClientDao;
 import com.rafaellroca.moviedb.repositories.network.VideoDataApiClientRepository;
 
 import javax.inject.Named;
@@ -42,7 +42,7 @@ public class CoreModule {
 
     @Provides
     @Singleton
-    public RetrofitApiClient provideVideosRetrofitApiClient() {
+    public RetrofitVideoDataApiClientDao provideVideosRetrofitApiClient() {
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.themoviedb.org")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -50,7 +50,7 @@ public class CoreModule {
                 .client(new OkHttpClient())
                 .build();
 
-        return retrofit.create(RetrofitApiClient.class);
+        return retrofit.create(RetrofitVideoDataApiClientDao.class);
     }
 
     @Provides
