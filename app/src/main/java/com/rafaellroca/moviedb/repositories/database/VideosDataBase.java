@@ -1,11 +1,11 @@
-package com.rafaellroca.moviedb.models.room;
+package com.rafaellroca.moviedb.repositories.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 
-import com.rafaellroca.moviedb.repositories.database.FilterJoinVideosDao;
-import com.rafaellroca.moviedb.repositories.database.FiltersDao;
-import com.rafaellroca.moviedb.repositories.database.VideoDataDao;
+import com.rafaellroca.moviedb.models.room.FilterEntity;
+import com.rafaellroca.moviedb.models.room.FilterJoinVideoEntity;
+import com.rafaellroca.moviedb.models.room.VideoDataEntity;
 
 @Database(entities = {VideoDataEntity.class, FilterEntity.class, FilterJoinVideoEntity.class}, version = 1, exportSchema = false)
 public abstract class VideosDataBase extends RoomDatabase {

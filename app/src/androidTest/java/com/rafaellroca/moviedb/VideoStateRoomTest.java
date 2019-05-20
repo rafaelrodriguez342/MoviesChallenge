@@ -8,7 +8,7 @@ import com.rafaellroca.moviedb.models.Filter;
 import com.rafaellroca.moviedb.models.room.FilterEntity;
 import com.rafaellroca.moviedb.models.room.FilterJoinVideoEntity;
 import com.rafaellroca.moviedb.models.room.VideoDataEntity;
-import com.rafaellroca.moviedb.models.room.VideosDataBase;
+import com.rafaellroca.moviedb.repositories.database.VideosDataBase;
 
 import org.junit.After;
 import org.junit.Before;

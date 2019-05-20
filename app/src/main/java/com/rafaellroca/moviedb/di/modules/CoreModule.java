@@ -4,19 +4,20 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
-
 import com.rafaellroca.moviedb.ApplicationClass;
 import com.rafaellroca.moviedb.ApplicationViewModelFactory;
-import com.rafaellroca.moviedb.models.room.VideosDataBase;
 import com.rafaellroca.moviedb.repositories.database.FilterJoinVideosDao;
 import com.rafaellroca.moviedb.repositories.database.FiltersDao;
 import com.rafaellroca.moviedb.repositories.database.RoomVideoDataCacheRepository;
 import com.rafaellroca.moviedb.repositories.database.VideoDataDao;
+import com.rafaellroca.moviedb.repositories.database.VideosDataBase;
 import com.rafaellroca.moviedb.repositories.interfaces.VideoDataCacheRepository;
 import com.rafaellroca.moviedb.repositories.interfaces.VideoDataRepository;
+import com.rafaellroca.moviedb.repositories.network.CombineVideoDataRepository;
 import com.rafaellroca.moviedb.repositories.network.RetrofitApiClient;
-import com.rafaellroca.moviedb.repositories.network.VideoDataRepositoryImpl;
+import com.rafaellroca.moviedb.repositories.network.VideoDataApiClientRepository;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -25,6 +26,8 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.rafaellroca.moviedb.repositories.network.VideoDataApiClientRepository.NAMED_API_CLIENT_KEY;
 
 /**
  * Module to provide general application dependencies.
@@ -58,8 +61,15 @@ public class CoreModule {
 
     @Provides
     @Singleton
-    public VideoDataRepository provideVideosDataRepository(VideoDataRepositoryImpl videoDataRepositoryImpl) {
-        return videoDataRepositoryImpl;
+    public VideoDataRepository provideVideosDataRepository(CombineVideoDataRepository combineVideoDataRepository) {
+        return combineVideoDataRepository;
+    }
+
+    @Provides
+    @Singleton
+    @Named(NAMED_API_CLIENT_KEY)
+    public VideoDataRepository provideVideosDataApiClientRepository(VideoDataApiClientRepository videoDataApiClientRepository) {
+        return videoDataApiClientRepository;
     }
 
     @Provides

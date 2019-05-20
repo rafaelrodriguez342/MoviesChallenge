@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public class RoomVideoDataCacheRepository implements VideoDataCacheRepository {
     private VideoDataDao videoDataDao;
@@ -28,31 +29,13 @@ public class RoomVideoDataCacheRepository implements VideoDataCacheRepository {
 
     @Override
     public Observable<List<VideoData>> getVideosData(Filter filter) {
-        return filterJoinVideosDao.getVideosForFilter(filter.toString()).toObservable().map(videoDataEntities -> videoDataEntities.stream()
-                                                                                                                                  .map(videoDataEntity -> new VideoData(videoDataEntity
-                                                                                                                                          .getId(),
-                                                                                                                                          videoDataEntity
-                                                                                                                                                  .getTitle(),
-                                                                                                                                          videoDataEntity
-                                                                                                                                                  .getImagePath(), videoDataEntity
-                                                                                                                                          .getVoteCount(),
-                                                                                                                                          videoDataEntity
-                                                                                                                                                  .getVoteAverage(),
-                                                                                                                                          videoDataEntity.getDescription()))
-                                                                                                                                  .collect(Collectors.toList()));
+        return unwrapItems(filterJoinVideosDao.getVideosForFilter(filter.toString()));
 
     }
 
     @Override
     public Observable<List<VideoData>> searchVideosData(Filter filter, String searchKeywords) {
-        return filterJoinVideosDao.searchVideosForFilter(filter.toString(), "%" + searchKeywords + "%")
-                                  .toObservable()
-                                  .map(videoDataEntities -> videoDataEntities.stream()
-                                                                             .map(videoDataEntity -> new VideoData(videoDataEntity.getId(),
-                                                                                     videoDataEntity.getTitle(),
-                                                                                     videoDataEntity.getImagePath(), videoDataEntity.getVoteCount(),
-                                                                                     videoDataEntity.getVoteAverage(), videoDataEntity.getDescription()))
-                                                                             .collect(Collectors.toList()));
+        return unwrapItems(filterJoinVideosDao.searchVideosForFilter(filter.toString(), "%" + searchKeywords + "%"));
     }
 
     @Override
@@ -69,5 +52,20 @@ public class RoomVideoDataCacheRepository implements VideoDataCacheRepository {
                                                     .map(videoData -> new FilterJoinVideoEntity(filter.toString(), videoData.getId()))
                                                     .collect(Collectors.toList()));
 
+    }
+
+    private Observable<List<VideoData>> unwrapItems(Single<List<VideoDataEntity>> singleList) {
+        return singleList.toObservable().map(videoDataEntities -> videoDataEntities.stream()
+                                                                                   .map(videoDataEntity -> new VideoData(videoDataEntity
+                                                                                           .getId(),
+                                                                                           videoDataEntity
+                                                                                                   .getTitle(),
+                                                                                           videoDataEntity
+                                                                                                   .getImagePath(), videoDataEntity
+                                                                                           .getVoteCount(),
+                                                                                           videoDataEntity
+                                                                                                   .getVoteAverage(),
+                                                                                           videoDataEntity.getDescription()))
+                                                                                   .collect(Collectors.toList()));
     }
 }

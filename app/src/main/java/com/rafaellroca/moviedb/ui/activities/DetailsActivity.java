@@ -3,11 +3,7 @@ package com.rafaellroca.moviedb.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
 import android.transition.Slide;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,14 +23,11 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
 
 
-
-
         ImageView videoImage = findViewById(R.id.main_image);
         TextView descriptionTextView = findViewById(R.id.description);
         TextView titleTextView = findViewById(R.id.title);
         TextView voteCountTextView = findViewById(R.id.vote_count);
         TextView voteAverageTextView = findViewById(R.id.vote_average);
-
 
         Slide slideIn = new Slide();
         View decor = getWindow().getDecorView();
@@ -64,11 +57,6 @@ public class DetailsActivity extends AppCompatActivity {
         titleTextView.setText(videoData.getTitle());
         voteCountTextView.setText(videoData.getVoteCount());
         voteAverageTextView.setText(videoData.getVoteAverage());
-
-    }
-
-    private void initFromVideo(VideoData videoData){
-
     }
 
     public static Intent createNewIntent(Context context, VideoData video) {

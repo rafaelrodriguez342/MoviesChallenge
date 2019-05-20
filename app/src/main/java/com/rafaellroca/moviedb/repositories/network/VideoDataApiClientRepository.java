@@ -5,7 +5,6 @@ import android.content.Context;
 import com.rafaellroca.moviedb.R;
 import com.rafaellroca.moviedb.models.Filter;
 import com.rafaellroca.moviedb.models.VideoData;
-import com.rafaellroca.moviedb.repositories.interfaces.VideoDataCacheRepository;
 import com.rafaellroca.moviedb.repositories.interfaces.VideoDataRepository;
 
 import java.util.AbstractMap;
@@ -18,37 +17,27 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
-public class VideoDataRepositoryImpl implements VideoDataRepository {
-    private RetrofitApiClient retrofitApiClient;
-    private VideoDataCacheRepository videoDataCacheRepository;
-    private final Context context;
+public class VideoDataApiClientRepository implements VideoDataRepository {
 
+    public static final String NAMED_API_CLIENT_KEY = "api_client";
+    private static final String URL_HOST_PATH = "https://image.tmdb.org/t/p/w500/";
     private static final Map<Filter.Category, String> CATEGORY_QUERY_STRINGS = Stream.of(
             new AbstractMap.SimpleImmutableEntry<>(Filter.Category.POPULAR, "popular"),
             new AbstractMap.SimpleImmutableEntry<>(Filter.Category.TOP_RATED, "top_rated"),
             new AbstractMap.SimpleImmutableEntry<>(Filter.Category.UPCOMING, "upcoming")
     ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
+    private RetrofitApiClient retrofitApiClient;
+    private final Context context;
+
     @Inject
-    public VideoDataRepositoryImpl(RetrofitApiClient retrofitApiClient, Context context, VideoDataCacheRepository videoDataCacheRepository) {
+    public VideoDataApiClientRepository(RetrofitApiClient retrofitApiClient, Context context) {
         this.retrofitApiClient = retrofitApiClient;
-        this.videoDataCacheRepository = videoDataCacheRepository;
         this.context = context;
     }
 
     @Override
     public Observable<List<VideoData>> getVideosData(Filter filter) {
-        return getVideosFromApi(filter)
-                .doOnNext(videoDataList -> videoDataCacheRepository.insertVideosData(videoDataList, filter))
-                .onErrorResumeNext(getVideosFromDb(filter));
-    }
-
-    @Override
-    public Observable<List<VideoData>> searchVideosData(Filter filter, String searchKeywords) {
-        return videoDataCacheRepository.searchVideosData(filter, searchKeywords);
-    }
-
-    private Observable<List<VideoData>> getVideosFromApi(Filter filter) {
         switch (filter.getType()) {
             case MOVIE:
                 return retrofitApiClient.getMovieVideosData(CATEGORY_QUERY_STRINGS.get(filter.getCategory()),
@@ -56,7 +45,7 @@ public class VideoDataRepositoryImpl implements VideoDataRepository {
                                                                                                         .map(videoDataDTO -> new VideoData(videoDataDTO
                                                                                                                 .getId(),
                                                                                                                 videoDataDTO.getTitle(),
-                                                                                                                "https://image.tmdb.org/t/p/w500/" + videoDataDTO
+                                                                                                                URL_HOST_PATH + videoDataDTO
                                                                                                                         .getBackdropPath(),
                                                                                                                 videoDataDTO.getVoteCount(),
                                                                                                                 videoDataDTO.getVoteAverage(),
@@ -68,7 +57,7 @@ public class VideoDataRepositoryImpl implements VideoDataRepository {
                                                                                                         .map(videoDataDTO -> new VideoData(videoDataDTO
                                                                                                                 .getId(),
                                                                                                                 videoDataDTO.getName(),
-                                                                                                                "https://image.tmdb.org/t/p/w500/" + videoDataDTO
+                                                                                                                URL_HOST_PATH + videoDataDTO
                                                                                                                         .getBackdropPath(),
                                                                                                                 videoDataDTO.getVoteCount(),
                                                                                                                 videoDataDTO.getVoteAverage(),
@@ -78,10 +67,11 @@ public class VideoDataRepositoryImpl implements VideoDataRepository {
             default:
                 return null;
         }
-
     }
 
-    private Observable<List<VideoData>> getVideosFromDb(Filter filter) {
-        return videoDataCacheRepository.getVideosData(filter);
+    @Override
+    public Observable<List<VideoData>> searchVideosData(Filter filter, String searchKeywords) {
+        // TODO: Enable Search from Rest api.
+        return null;
     }
 }

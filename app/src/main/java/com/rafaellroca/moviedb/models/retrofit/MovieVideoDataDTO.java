@@ -1,7 +1,5 @@
 package com.rafaellroca.moviedb.models.retrofit;
 
-import java.util.ArrayList;
-
 public class MovieVideoDataDTO extends VideoDataDTO {
 
 
