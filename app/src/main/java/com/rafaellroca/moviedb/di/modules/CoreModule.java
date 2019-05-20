@@ -15,7 +15,7 @@ import com.rafaellroca.moviedb.repositories.database.VideoDataDao;
 import com.rafaellroca.moviedb.repositories.interfaces.VideoDataCacheRepository;
 import com.rafaellroca.moviedb.repositories.interfaces.VideoDataRepository;
 import com.rafaellroca.moviedb.repositories.network.RetrofitApiClient;
-import com.rafaellroca.moviedb.repositories.network.VideoDataCacheApiClient;
+import com.rafaellroca.moviedb.repositories.network.VideoDataRepositoryImpl;
 
 import javax.inject.Singleton;
 
@@ -58,8 +58,8 @@ public class CoreModule {
 
     @Provides
     @Singleton
-    public VideoDataRepository provideVideosDataRepository(VideoDataCacheApiClient videoDataCacheApiClient) {
-        return videoDataCacheApiClient;
+    public VideoDataRepository provideVideosDataRepository(VideoDataRepositoryImpl videoDataRepositoryImpl) {
+        return videoDataRepositoryImpl;
     }
 
     @Provides

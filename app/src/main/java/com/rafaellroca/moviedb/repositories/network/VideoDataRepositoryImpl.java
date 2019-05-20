@@ -18,7 +18,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
-public class VideoDataCacheApiClient implements VideoDataRepository {
+public class VideoDataRepositoryImpl implements VideoDataRepository {
     private RetrofitApiClient retrofitApiClient;
     private VideoDataCacheRepository videoDataCacheRepository;
     private final Context context;
@@ -30,7 +30,7 @@ public class VideoDataCacheApiClient implements VideoDataRepository {
     ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     @Inject
-    public VideoDataCacheApiClient(RetrofitApiClient retrofitApiClient, Context context, VideoDataCacheRepository videoDataCacheRepository) {
+    public VideoDataRepositoryImpl(RetrofitApiClient retrofitApiClient, Context context, VideoDataCacheRepository videoDataCacheRepository) {
         this.retrofitApiClient = retrofitApiClient;
         this.videoDataCacheRepository = videoDataCacheRepository;
         this.context = context;
